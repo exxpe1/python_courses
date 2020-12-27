@@ -1,93 +1,63 @@
-board = ['-', '-', '-',
-         '-', '-', '-',
-         '-', '-', '-']
-gameplay = [1, 0, 1, 0, 1, 0, 1, 0, 1]
-def display_board():
-    print(board[0] + '|' + board[1] + '|' + board[2])
-    print(board[3] + '|' + board[4] + '|' + board[5])
-    print(board[6] + '|' + board[7] + '|' + board[8])
+import os
 
-def win_check():
-    # Row Check
-    for col in range(7):
-        if board[col] is board[col+1] is board[col+2] == 'X':
-            print('You win')
-            return True
-        if board[col] is board[col+1] is board[col+2] == 'O':
-            print('You win')
-            return True
+d = {a: a + 1 for a in range(9)}
+b = ('x', '0')
+choice = input('Выберите x или 0 для игры ')
 
-    # Column Check
-    for row in range(3):
-        if board[row] is board[row+3] is board[row+6] == 'X':
-            print('You win')
-            return True
-        if board[row] is board[row+3] is board[row+6] == 'O':
-            print('You win')
-            return True
-
-    # Diagonal Check
-    dia = 0
-    if board[dia] is board[dia+4] is board[dia+8] == 'X':
-        print('You win')
-        display_board()
-        return True
-    elif board[dia] is board[dia+4] is board[dia+8] == 'O':
-        print('You win')
-        display_board()
-        return True
-    dia = 2
-    if board[dia] is board[dia+2] is board[dia+4] == 'X':
-        print('You win')
-        display_board()
-        return True
-    elif board[dia] is board[dia+2] is board[dia+4] == 'O':
-        print('You win')
-        display_board()
-        return True
-
-def play_game():
-    i = 0
-    if gameplay[i] == 1:
-        board[val] = 'X'
-        gameplay.pop(i)
-        res = win_check()
-        if res is True:
-            return True
-        else:
-            display_board()
-            inval()
-    else:
-        board[val] = 'O'
-        gameplay.pop(i)
-        res = win_check()
-        if res is True:
-            return True
-        else:
-            display_board()
-            inval()
-
-
-def inval():
-    global val
-    val = int(input('Choose the values from 0 to 8'))
+while choice not in b:
     try:
-        if val<=8 and val>=0:
-            for item in range(9):
-                if item == val:
-                    res = play_game()
-                    if res is True:
-                        break
-                    break
+        print('Вы ввели не x или 0')
+        choice = input('Выберите x или 0 для игры ')
+    except ValueError:
+        print('Вы ввели не x или 0')
+        choice = input('Выберите x или 0 для игры ')
+
+player1 = choice
+
+if player1 == 'x':
+    player2 = '0' 
+else:
+    player2 ='x'
+
+game_mode = 0
+while game_mode < 9:
+    game_mode += 1
+    for a in range(3):
+        print(d[0 + a * 3], '|', d[1 + a * 3], '|', d[2 + a * 3])
+        print('---------')
+    print('Ход игрока ', choice)
+    position = int(input('Введите номер ячейки для ввода '))
+    while d[position - 1] in b:
+        print('Вы выбрали занятую ячейку')
+        position = int(input('Введите номер ячейки для ввода '))
+    d[position - 1] = choice    
+    if d[0] == d[1] == d[2] or d[0] == d[3] == d[6] or d[0] == d[4] == d[8] \
+    or d[2] == d[4] == d[6] or d[1] == d[4] == d[7] or d[5] == d[4] == d[3] \
+    or d[5] == d[2] == d[8] or d[6] == d[7] == d[8]:
+        print('Игрок', choice, 'выиграл.')
+        restart =''
+        restart = int(input('Вы хотите продолжить играть? \n 1 - Да \n 2 - Выход \n'))
+        if restart == 1:
+            game_mode = 0
+            os.system('cls' if os.name == 'nt' else 'clear')
+            d = {a: a + 1 for a in range(9)}
         else:
-            print('Enter Valid Input!!!!')
-            inval()
+            break
+        
+    else:
+        if game_mode == 9:
+            print('Ничья')
+            restart = int(input('Вы хотите продолжить играть? \n 1 - Да \n 2 - Выход \n'))
+            if restart == 1:
+                game_mode = 0
+                os.system('cls' if os.name == 'nt' else 'clear')
+                d = {a: a + 1 for a in range(9)}
+            else:
+                break
+        else:
+            pass
 
-    except TypeError:
-        print('Enter Valid Input!!!!')
-        inval()
-
-
-
-display_board()
-inval()
+    if choice == 'x':
+        choice = '0'
+    else:
+        choice = 'x'

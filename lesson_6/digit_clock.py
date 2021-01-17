@@ -1,21 +1,27 @@
 import time
 import os
+import digit_clock_format
 
-def print_clock():
-    os.system('cls' if os.name == 'nt' else 'clear')
-    separator = ':'
+
+
+def print_clock(scale = 1, sep = ':'):
+    
     cur_time = time.localtime()
-    hour_a = cur_time.tm_hour // 10
-    hour_b = cur_time.tm_hour % 10
-    minute_a = cur_time.tm_min // 10
-    minute_b = cur_time.tm_min % 10
-    second_a = cur_time.tm_sec // 10
-    second_b = cur_time.tm_sec % 10
-    print(hour_a, hour_b, separator, minute_a, minute_b, separator, second_a, second_b, sep='')
-    time.sleep(1)
+    hour_a = digit_clock_format.char_in_str(cur_time.tm_hour // 10, scale)
+    hour_b = digit_clock_format.char_in_str(cur_time.tm_hour % 10, scale)
+    minute_a = digit_clock_format.char_in_str(cur_time.tm_min // 10, scale)
+    minute_b = digit_clock_format.char_in_str(cur_time.tm_min % 10, scale)
+    second_a = digit_clock_format.char_in_str(cur_time.tm_sec // 10, scale)
+    second_b = digit_clock_format.char_in_str(cur_time.tm_sec % 10, scale)
+    
+    if sep not in digit_clock_format.digit_chars:
+        sep = ':'
+    separator = digit_clock_format.char_in_str(sep, scale)
 
-while True:
-    print_clock()
+    for item in range(len(hour_a)):
+        print(digit_clock_format.color + hour_a[item] + '  ' +  hour_b[item] + separator[item] +
+        minute_a[item] + '  ' + minute_b[item] + separator[item] +
+        second_a[item] + '  ' + second_b[item])
 
 if __name__ == "__main__":
     pass
